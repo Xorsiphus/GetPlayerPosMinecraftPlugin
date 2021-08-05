@@ -51,7 +51,7 @@ public class Getter extends JavaPlugin {
                                 " " + targetPlayerLoc.getBlockY() +
                                 " " + targetPlayerLoc.getBlockZ()
                 );
-
+                return true;
             }
         }
         return false;
