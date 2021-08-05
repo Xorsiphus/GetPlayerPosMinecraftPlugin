@@ -1,5 +1,6 @@
 package ru.xorsiphus.positiongetter;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -8,41 +9,51 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Getter extends JavaPlugin {
     @Override
-    public void onEnable(){
+    public void onEnable() {
         getLogger().info("GetPlayerPos Plugin has been enabled!");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        var player = (Player) sender;
+        Player player = null;
 
-        if (player != null && args.length > 0){
+        if (sender instanceof Player)
+            player = (Player) sender;
 
-            if (player.isOp()){
-                getLogger().info(sender.toString());
-                getLogger().info(command.toString());
-                getLogger().info(args[0]);
+        if (args.length == 1) {
+            var targetPlayer = getServer().getPlayer(args[0]);
+            if (targetPlayer == null) {
+                sender.sendMessage("Player not found!");
+                return true;
+            }
 
-                var targetPlayer = getServer().getPlayer(args[0]);
+            var targetPlayerLoc = targetPlayer.getLocation();
 
-                if (targetPlayer != null){
-                    var loc = targetPlayer.getLocation();
-
-                    player.sendMessage(targetPlayer.getLocation().getWorld().getName() +
-                            ": " + loc.getBlockX() +
-                            " " + loc.getBlockY() +
-                            " " + loc.getBlockZ()
+            if (player != null) {
+                if (player.isOp()) {
+                    player.sendMessage(
+                            targetPlayerLoc.getWorld().getName() +
+                                    ": " + targetPlayerLoc.getBlockX() +
+                                    " " + targetPlayerLoc.getBlockY() +
+                                    " " + targetPlayerLoc.getBlockZ()
                     );
-                } else
-                {
-                    player.sendMessage("Player not found!");
+
+                } else {
+                    player.sendMessage("You are not an op!");
                 }
                 return true;
-            }else {
-                player.sendMessage("You are not an op!");
+            } else {
+                sender.sendMessage(
+                        ChatColor.GREEN +
+                                targetPlayerLoc.getWorld().getName() +
+                                ": " + targetPlayerLoc.getBlockX() +
+                                " " + targetPlayerLoc.getBlockY() +
+                                " " + targetPlayerLoc.getBlockZ()
+                );
+
             }
         }
-        return true;
+        return false;
     }
 }
