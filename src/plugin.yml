@@ -1,0 +1,8 @@
+name: GetPlayerPos
+main: ru.xorsiphus.positiongetter.Getter
+version: 1.0
+description: A basic useful plugin
+commands:
+  getpos:
+    description: Get player coordinates
+    usage: /<command> <player_name>
