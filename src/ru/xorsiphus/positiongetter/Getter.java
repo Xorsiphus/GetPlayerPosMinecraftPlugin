@@ -70,11 +70,10 @@ public class Getter extends JavaPlugin {
             }
 
             if (player != null) {
-                if (player.isOp()) {
+                if (player.hasPermission("GetPlayerPos.Execute") || player.isOp()) {
                     player.sendMessage(message);
-
                 } else {
-                    player.sendMessage(ChatColor.RED + "You are not an op!");
+                    player.sendMessage(ChatColor.RED + "Sorry, you do not have enough permissions!");
                 }
             } else {
                 sender.sendMessage(message);
